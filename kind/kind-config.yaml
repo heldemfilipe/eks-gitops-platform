@@ -1,0 +1,20 @@
+# Cluster local do laboratório: 1 control-plane e 2 workers.
+# O CNI padrão (kindnet) sai de cena para o Calico, que aplica NetworkPolicy (Etapa 6).
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  disableDefaultCNI: true
+  podSubnet: "192.168.0.0/16" # o mesmo CIDR padrão do manifesto do Calico
+nodes:
+  - role: control-plane
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+    extraPortMappings:
+      - { containerPort: 80, hostPort: 80, protocol: TCP }
+      - { containerPort: 443, hostPort: 443, protocol: TCP }
+  - role: worker
+  - role: worker
