@@ -1,0 +1,38 @@
+# Diretórios locais do Terraform
+.terraform/
+
+# State: nunca vai para o git (contém dados sensíveis)
+*.tfstate
+*.tfstate.*
+
+# Logs de crash
+crash.log
+crash.*.log
+
+# Variáveis com dados pessoais ou segredos
+*.tfvars
+*.tfvars.json
+!exemplo.tfvars
+
+# Overrides locais
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Planos e saídas geradas
+*.tfplan
+plan.json
+plan.txt
+
+# Configuração local da CLI
+.terraformrc
+terraform.rc
+
+# Kubeconfig e segredos locais do laboratório
+kubeconfig*
+*.kubeconfig
+.env
+.env.*
+
+# O .terraform.lock.hcl PRECISA ser versionado: não ignore.
