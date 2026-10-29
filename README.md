@@ -29,20 +29,37 @@ quando algo falha e como se opera: criar em camadas, entregar por Git, observar,
 | Peça | Versão | Observação |
 |---|---|---|
 | Kubernetes no EKS (declarado no código) | _a definir na Etapa 2_ | Anotar a data da consulta da página de versões do EKS |
-| Kubernetes no kind | _a definir na Etapa 1_ | |
-| Argo CD | _a definir na Etapa 1_ | Só as 3 minors mais recentes recebem patch |
+| Kubernetes no kind | v1.37.0 | Imagem padrão do kind v0.33.0 |
+| Argo CD | v3.5.6 | Só as 3 minors mais recentes recebem patch |
 | Terraform | 1.16 ou mais novo | |
 
 ## Etapas
 
 - [x] Etapa 0: repositórios, estrutura e ferramentas
-- [ ] Etapa 1: kind e Argo CD
+- [x] Etapa 1: kind e Argo CD (veja [docs/01-kind-argocd.md](docs/01-kind-argocd.md))
 - [ ] Etapa 2: Terraform em camadas (validado offline)
 - [ ] Etapa 3: identidade e ingress
 - [ ] Etapa 4: entrega contínua
 - [ ] Etapa 5: observabilidade
 - [ ] Etapa 6: guardrails e experimentos de falha
 - [ ] Etapa 7: fechamento e custo estimado
+
+## Como rodar
+
+Requisitos: Docker Desktop ligado, `kind`, `kubectl`, `helm` e `make`.
+
+```bash
+make up      # kind, Calico, Argo CD e o root.yaml
+make down    # apaga o cluster
+```
+
+## Experimentos
+
+| Experimento | Status | Resultado observado |
+|---|---|---|
+| Self-heal | executado | O Argo CD recriou o Deployment apagado; 2 réplicas `Ready` em cerca de 21 s |
+| Drift manual | executado | `scale --replicas=5` voltou a 2 em cerca de 4 s |
+| Rollback | executado | Tag quebrada: pod novo em `ImagePullBackOff` e os antigos seguiram `Running`; `git revert` voltou a `Synced/Healthy` em cerca de 7 s |
 
 ## Custo
 
