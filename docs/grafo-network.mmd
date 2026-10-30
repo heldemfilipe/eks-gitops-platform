@@ -1,0 +1,30 @@
+flowchart LR
+  subgraph module.network
+    module.network.aws_default_security_group.this["aws_default_security_group.this"]
+    module.network.aws_eip.nat["aws_eip.nat"]
+    module.network.aws_internet_gateway.this["aws_internet_gateway.this"]
+    module.network.aws_nat_gateway.this["aws_nat_gateway.this"]
+    module.network.aws_route.private_nat["aws_route.private_nat"]
+    module.network.aws_route_table.private["aws_route_table.private"]
+    module.network.aws_route_table.public["aws_route_table.public"]
+    module.network.aws_route_table_association.private["aws_route_table_association.private"]
+    module.network.aws_route_table_association.public["aws_route_table_association.public"]
+    module.network.aws_subnet.private["aws_subnet.private"]
+    module.network.aws_subnet.public["aws_subnet.public"]
+    module.network.aws_vpc.this["aws_vpc.this"]
+  end
+  module.network.aws_default_security_group.this --> module.network.aws_vpc.this
+  module.network.aws_internet_gateway.this --> module.network.aws_vpc.this
+  module.network.aws_nat_gateway.this --> module.network.aws_eip.nat
+  module.network.aws_nat_gateway.this --> module.network.aws_internet_gateway.this
+  module.network.aws_nat_gateway.this --> module.network.aws_subnet.public
+  module.network.aws_route.private_nat --> module.network.aws_nat_gateway.this
+  module.network.aws_route.private_nat --> module.network.aws_route_table.private
+  module.network.aws_route_table.private --> module.network.aws_vpc.this
+  module.network.aws_route_table.public --> module.network.aws_internet_gateway.this
+  module.network.aws_route_table_association.private --> module.network.aws_route_table.private
+  module.network.aws_route_table_association.private --> module.network.aws_subnet.private
+  module.network.aws_route_table_association.public --> module.network.aws_route_table.public
+  module.network.aws_route_table_association.public --> module.network.aws_subnet.public
+  module.network.aws_subnet.private --> module.network.aws_vpc.this
+  module.network.aws_subnet.public --> module.network.aws_vpc.this

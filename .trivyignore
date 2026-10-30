@@ -1,0 +1,6 @@
+# Exceções do Trivy, cada uma com o motivo.
+
+# O módulo terraform-aws-modules/eks cria a regra de saída "egress_all" do security group dos nós. Os nós
+# precisam alcançar o ECR, o S3 e a internet (pelo NAT) para puxar imagens; restringir exigiria endpoints de
+# VPC por serviço, fora do escopo de um laboratório que nunca é aplicado.
+AWS-0104

@@ -36,3 +36,4 @@ kubeconfig*
 .env.*
 
 # O .terraform.lock.hcl PRECISA ser versionado: não ignore.
+.helm/

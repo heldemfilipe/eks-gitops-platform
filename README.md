@@ -28,7 +28,9 @@ quando algo falha e como se opera: criar em camadas, entregar por Git, observar,
 
 | Peça | Versão | Observação |
 |---|---|---|
-| Kubernetes no EKS (declarado no código) | _a definir na Etapa 2_ | Anotar a data da consulta da página de versões do EKS |
+| Kubernetes no EKS (declarado no código) | 1.37 | Valor do roteiro (consultado em 21/10/2026); **a confirmar** na página de versões do EKS antes de qualquer uso real |
+| Módulo EKS | terraform-aws-modules/eks 21.29.0 | Versão fixa |
+| Chart do Argo CD | argo-cd 10.11.6 | Instala o Argo CD v3.5.6 |
 | Kubernetes no kind | v1.37.0 | Imagem padrão do kind v0.33.0 |
 | Argo CD | v3.5.6 | Só as 3 minors mais recentes recebem patch |
 | Terraform | 1.16 ou mais novo | |
@@ -37,7 +39,7 @@ quando algo falha e como se opera: criar em camadas, entregar por Git, observar,
 
 - [x] Etapa 0: repositórios, estrutura e ferramentas
 - [x] Etapa 1: kind e Argo CD (veja [docs/01-kind-argocd.md](docs/01-kind-argocd.md))
-- [ ] Etapa 2: Terraform em camadas (validado offline)
+- [x] Etapa 2: Terraform em camadas (rede e cluster validados offline; bootstrap aplicado no kind; veja [docs/02-terraform-camadas.md](docs/02-terraform-camadas.md))
 - [ ] Etapa 3: identidade e ingress
 - [ ] Etapa 4: entrega contínua
 - [ ] Etapa 5: observabilidade
@@ -49,9 +51,20 @@ quando algo falha e como se opera: criar em camadas, entregar por Git, observar,
 Requisitos: Docker Desktop ligado, `kind`, `kubectl`, `helm` e `make`.
 
 ```bash
-make up      # kind, Calico, Argo CD e o root.yaml
-make down    # apaga o cluster
+make up            # kind, Calico, Argo CD (Terraform, camada bootstrap) e o root.yaml; ~167 s
+make down          # apaga o cluster; ~4 s
+make validate-aws  # fmt, validate e terraform test nas camadas network e cluster (nunca há apply)
+make policy        # opa test e conftest sobre o plano real da rede
+make scan          # Trivy no código próprio
 ```
+
+## Status das camadas
+
+| Camada | Status |
+|---|---|
+| `terraform/network` | validado, 16 recursos no plan offline, **não aplicado** |
+| `terraform/cluster` | validado e testado com mock; `plan` offline não executado (o módulo EKS consulta o STS); **não aplicado** |
+| `terraform/bootstrap` | **aplicado no kind** (Argo CD v3.5.6) |
 
 ## Experimentos
 

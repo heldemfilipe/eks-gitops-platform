@@ -1,0 +1,263 @@
+flowchart LR
+  data.terraform_remote_state.network["data.terraform_remote_state.network"]
+  subgraph module.eks
+    module.eks.data.aws_caller_identity.current["data.aws_caller_identity.current"]
+    module.eks.data.aws_eks_addon_version.this["data.aws_eks_addon_version.this"]
+    module.eks.data.aws_iam_policy_document.assume_role_policy["data.aws_iam_policy_document.assume_role_policy"]
+    module.eks.data.aws_iam_policy_document.cni_ipv6_policy["data.aws_iam_policy_document.cni_ipv6_policy"]
+    module.eks.data.aws_iam_policy_document.custom["data.aws_iam_policy_document.custom"]
+    module.eks.data.aws_iam_policy_document.node_assume_role_policy["data.aws_iam_policy_document.node_assume_role_policy"]
+    module.eks.data.aws_iam_session_context.current["data.aws_iam_session_context.current"]
+    module.eks.data.aws_partition.current["data.aws_partition.current"]
+    module.eks.data.tls_certificate.this["data.tls_certificate.this"]
+    module.eks.aws_cloudwatch_log_group.this["aws_cloudwatch_log_group.this"]
+    module.eks.aws_ec2_tag.cluster_primary_security_group["aws_ec2_tag.cluster_primary_security_group"]
+    module.eks.aws_eks_access_entry.this["aws_eks_access_entry.this"]
+    module.eks.aws_eks_access_policy_association.this["aws_eks_access_policy_association.this"]
+    module.eks.aws_eks_addon.before_compute["aws_eks_addon.before_compute"]
+    module.eks.aws_eks_addon.this["aws_eks_addon.this"]
+    module.eks.aws_eks_cluster.this["aws_eks_cluster.this"]
+    module.eks.aws_eks_identity_provider_config.this["aws_eks_identity_provider_config.this"]
+    module.eks.aws_iam_openid_connect_provider.oidc_provider["aws_iam_openid_connect_provider.oidc_provider"]
+    module.eks.aws_iam_policy.cluster_encryption["aws_iam_policy.cluster_encryption"]
+    module.eks.aws_iam_policy.cni_ipv6_policy["aws_iam_policy.cni_ipv6_policy"]
+    module.eks.aws_iam_policy.custom["aws_iam_policy.custom"]
+    module.eks.aws_iam_role.eks_auto["aws_iam_role.eks_auto"]
+    module.eks.aws_iam_role.this["aws_iam_role.this"]
+    module.eks.aws_iam_role_policy_attachment.additional["aws_iam_role_policy_attachment.additional"]
+    module.eks.aws_iam_role_policy_attachment.cluster_encryption["aws_iam_role_policy_attachment.cluster_encryption"]
+    module.eks.aws_iam_role_policy_attachment.custom["aws_iam_role_policy_attachment.custom"]
+    module.eks.aws_iam_role_policy_attachment.eks_auto["aws_iam_role_policy_attachment.eks_auto"]
+    module.eks.aws_iam_role_policy_attachment.eks_auto_additional["aws_iam_role_policy_attachment.eks_auto_additional"]
+    module.eks.aws_iam_role_policy_attachment.this["aws_iam_role_policy_attachment.this"]
+    module.eks.aws_security_group.cluster["aws_security_group.cluster"]
+    module.eks.aws_security_group.node["aws_security_group.node"]
+    module.eks.aws_security_group_rule.cluster["aws_security_group_rule.cluster"]
+    module.eks.aws_security_group_rule.node["aws_security_group_rule.node"]
+    module.eks.time_sleep.this["time_sleep.this"]
+  end
+  subgraph module.eks.module.eks_managed_node_group
+    module.eks.module.eks_managed_node_group.data.aws_caller_identity.current["data.aws_caller_identity.current"]
+    module.eks.module.eks_managed_node_group.data.aws_ec2_instance_type.this["data.aws_ec2_instance_type.this"]
+    module.eks.module.eks_managed_node_group.data.aws_eks_cluster_versions.this["data.aws_eks_cluster_versions.this"]
+    module.eks.module.eks_managed_node_group.data.aws_iam_policy_document.assume_role_policy["data.aws_iam_policy_document.assume_role_policy"]
+    module.eks.module.eks_managed_node_group.data.aws_iam_policy_document.role["data.aws_iam_policy_document.role"]
+    module.eks.module.eks_managed_node_group.data.aws_partition.current["data.aws_partition.current"]
+    module.eks.module.eks_managed_node_group.data.aws_ssm_parameter.ami["data.aws_ssm_parameter.ami"]
+    module.eks.module.eks_managed_node_group.data.aws_subnet.this["data.aws_subnet.this"]
+    module.eks.module.eks_managed_node_group.aws_eks_node_group.this["aws_eks_node_group.this"]
+    module.eks.module.eks_managed_node_group.aws_iam_role.this["aws_iam_role.this"]
+    module.eks.module.eks_managed_node_group.aws_iam_role_policy.this["aws_iam_role_policy.this"]
+    module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.additional["aws_iam_role_policy_attachment.additional"]
+    module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.this["aws_iam_role_policy_attachment.this"]
+    module.eks.module.eks_managed_node_group.aws_launch_template.this["aws_launch_template.this"]
+    module.eks.module.eks_managed_node_group.aws_placement_group.this["aws_placement_group.this"]
+    module.eks.module.eks_managed_node_group.aws_security_group.this["aws_security_group.this"]
+    module.eks.module.eks_managed_node_group.aws_vpc_security_group_egress_rule.this["aws_vpc_security_group_egress_rule.this"]
+    module.eks.module.eks_managed_node_group.aws_vpc_security_group_ingress_rule.this["aws_vpc_security_group_ingress_rule.this"]
+  end
+  subgraph module.eks.module.eks_managed_node_group.module.user_data
+    module.eks.module.eks_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group["data.cloudinit_config.al2023_eks_managed_node_group"]
+    module.eks.module.eks_managed_node_group.module.user_data.data.cloudinit_config.al2_eks_managed_node_group["data.cloudinit_config.al2_eks_managed_node_group"]
+    module.eks.module.eks_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr["null_resource.validate_cluster_service_cidr"]
+  end
+  subgraph module.eks.module.fargate_profile
+    module.eks.module.fargate_profile.data.aws_caller_identity.current["data.aws_caller_identity.current"]
+    module.eks.module.fargate_profile.data.aws_iam_policy_document.assume_role_policy["data.aws_iam_policy_document.assume_role_policy"]
+    module.eks.module.fargate_profile.data.aws_iam_policy_document.role["data.aws_iam_policy_document.role"]
+    module.eks.module.fargate_profile.data.aws_partition.current["data.aws_partition.current"]
+    module.eks.module.fargate_profile.data.aws_region.current["data.aws_region.current"]
+    module.eks.module.fargate_profile.aws_eks_fargate_profile.this["aws_eks_fargate_profile.this"]
+    module.eks.module.fargate_profile.aws_iam_role.this["aws_iam_role.this"]
+    module.eks.module.fargate_profile.aws_iam_role_policy.this["aws_iam_role_policy.this"]
+    module.eks.module.fargate_profile.aws_iam_role_policy_attachment.additional["aws_iam_role_policy_attachment.additional"]
+    module.eks.module.fargate_profile.aws_iam_role_policy_attachment.this["aws_iam_role_policy_attachment.this"]
+  end
+  subgraph module.eks.module.kms
+    module.eks.module.kms.data.aws_caller_identity.current["data.aws_caller_identity.current"]
+    module.eks.module.kms.data.aws_iam_policy_document.this["data.aws_iam_policy_document.this"]
+    module.eks.module.kms.data.aws_partition.current["data.aws_partition.current"]
+    module.eks.module.kms.aws_kms_alias.this["aws_kms_alias.this"]
+    module.eks.module.kms.aws_kms_external_key.this["aws_kms_external_key.this"]
+    module.eks.module.kms.aws_kms_grant.this["aws_kms_grant.this"]
+    module.eks.module.kms.aws_kms_key.this["aws_kms_key.this"]
+    module.eks.module.kms.aws_kms_replica_external_key.this["aws_kms_replica_external_key.this"]
+    module.eks.module.kms.aws_kms_replica_key.this["aws_kms_replica_key.this"]
+  end
+  subgraph module.eks.module.self_managed_node_group
+    module.eks.module.self_managed_node_group.data.aws_caller_identity.current["data.aws_caller_identity.current"]
+    module.eks.module.self_managed_node_group.data.aws_ec2_instance_type.this["data.aws_ec2_instance_type.this"]
+    module.eks.module.self_managed_node_group.data.aws_iam_policy_document.assume_role_policy["data.aws_iam_policy_document.assume_role_policy"]
+    module.eks.module.self_managed_node_group.data.aws_iam_policy_document.role["data.aws_iam_policy_document.role"]
+    module.eks.module.self_managed_node_group.data.aws_partition.current["data.aws_partition.current"]
+    module.eks.module.self_managed_node_group.data.aws_ssm_parameter.ami["data.aws_ssm_parameter.ami"]
+    module.eks.module.self_managed_node_group.data.aws_subnet.this["data.aws_subnet.this"]
+    module.eks.module.self_managed_node_group.aws_autoscaling_group.this["aws_autoscaling_group.this"]
+    module.eks.module.self_managed_node_group.aws_eks_access_entry.this["aws_eks_access_entry.this"]
+    module.eks.module.self_managed_node_group.aws_iam_instance_profile.this["aws_iam_instance_profile.this"]
+    module.eks.module.self_managed_node_group.aws_iam_role.this["aws_iam_role.this"]
+    module.eks.module.self_managed_node_group.aws_iam_role_policy.this["aws_iam_role_policy.this"]
+    module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.additional["aws_iam_role_policy_attachment.additional"]
+    module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.this["aws_iam_role_policy_attachment.this"]
+    module.eks.module.self_managed_node_group.aws_launch_template.this["aws_launch_template.this"]
+    module.eks.module.self_managed_node_group.aws_placement_group.this["aws_placement_group.this"]
+    module.eks.module.self_managed_node_group.aws_security_group.this["aws_security_group.this"]
+    module.eks.module.self_managed_node_group.aws_vpc_security_group_egress_rule.this["aws_vpc_security_group_egress_rule.this"]
+    module.eks.module.self_managed_node_group.aws_vpc_security_group_ingress_rule.this["aws_vpc_security_group_ingress_rule.this"]
+  end
+  subgraph module.eks.module.self_managed_node_group.module.user_data
+    module.eks.module.self_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group["data.cloudinit_config.al2023_eks_managed_node_group"]
+    module.eks.module.self_managed_node_group.module.user_data.data.cloudinit_config.al2_eks_managed_node_group["data.cloudinit_config.al2_eks_managed_node_group"]
+    module.eks.module.self_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr["null_resource.validate_cluster_service_cidr"]
+  end
+  module.eks.data.aws_eks_addon_version.this --> module.eks.aws_eks_cluster.this
+  module.eks.data.aws_iam_policy_document.cni_ipv6_policy --> module.eks.data.aws_partition.current
+  module.eks.data.aws_iam_policy_document.custom --> module.eks.data.aws_partition.current
+  module.eks.data.aws_iam_session_context.current --> module.eks.data.aws_caller_identity.current
+  module.eks.data.tls_certificate.this --> module.eks.aws_eks_cluster.this
+  module.eks.aws_cloudwatch_log_group.this --> data.terraform_remote_state.network
+  module.eks.aws_ec2_tag.cluster_primary_security_group --> module.eks.aws_eks_cluster.this
+  module.eks.aws_eks_access_entry.this --> module.eks.aws_eks_cluster.this
+  module.eks.aws_eks_access_policy_association.this --> module.eks.aws_eks_access_entry.this
+  module.eks.aws_eks_addon.before_compute --> module.eks.data.aws_eks_addon_version.this
+  module.eks.aws_eks_addon.this --> module.eks.data.aws_eks_addon_version.this
+  module.eks.aws_eks_addon.this --> module.eks.module.eks_managed_node_group.aws_eks_node_group.this
+  module.eks.aws_eks_addon.this --> module.eks.module.eks_managed_node_group.aws_iam_role_policy.this
+  module.eks.aws_eks_addon.this --> module.eks.module.eks_managed_node_group.aws_vpc_security_group_egress_rule.this
+  module.eks.aws_eks_addon.this --> module.eks.module.eks_managed_node_group.aws_vpc_security_group_ingress_rule.this
+  module.eks.aws_eks_addon.this --> module.eks.module.eks_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr
+  module.eks.aws_eks_addon.this --> module.eks.module.fargate_profile.aws_eks_fargate_profile.this
+  module.eks.aws_eks_addon.this --> module.eks.module.fargate_profile.aws_iam_role_policy.this
+  module.eks.aws_eks_addon.this --> module.eks.module.fargate_profile.aws_iam_role_policy_attachment.additional
+  module.eks.aws_eks_addon.this --> module.eks.module.fargate_profile.aws_iam_role_policy_attachment.this
+  module.eks.aws_eks_addon.this --> module.eks.module.self_managed_node_group.aws_autoscaling_group.this
+  module.eks.aws_eks_addon.this --> module.eks.module.self_managed_node_group.aws_eks_access_entry.this
+  module.eks.aws_eks_addon.this --> module.eks.module.self_managed_node_group.aws_iam_role_policy.this
+  module.eks.aws_eks_addon.this --> module.eks.module.self_managed_node_group.aws_vpc_security_group_egress_rule.this
+  module.eks.aws_eks_addon.this --> module.eks.module.self_managed_node_group.aws_vpc_security_group_ingress_rule.this
+  module.eks.aws_eks_addon.this --> module.eks.module.self_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr
+  module.eks.aws_eks_cluster.this --> module.eks.aws_cloudwatch_log_group.this
+  module.eks.aws_eks_cluster.this --> module.eks.aws_iam_policy.cni_ipv6_policy
+  module.eks.aws_eks_cluster.this --> module.eks.aws_iam_role.eks_auto
+  module.eks.aws_eks_cluster.this --> module.eks.aws_iam_role_policy_attachment.this
+  module.eks.aws_eks_cluster.this --> module.eks.aws_security_group_rule.cluster
+  module.eks.aws_eks_cluster.this --> module.eks.aws_security_group_rule.node
+  module.eks.aws_eks_cluster.this --> module.eks.module.kms.aws_kms_external_key.this
+  module.eks.aws_eks_cluster.this --> module.eks.module.kms.aws_kms_key.this
+  module.eks.aws_eks_cluster.this --> module.eks.module.kms.aws_kms_replica_external_key.this
+  module.eks.aws_eks_cluster.this --> module.eks.module.kms.aws_kms_replica_key.this
+  module.eks.aws_eks_identity_provider_config.this --> module.eks.aws_eks_cluster.this
+  module.eks.aws_iam_openid_connect_provider.oidc_provider --> module.eks.data.tls_certificate.this
+  module.eks.aws_iam_policy.cluster_encryption --> module.eks.module.kms.aws_kms_external_key.this
+  module.eks.aws_iam_policy.cluster_encryption --> module.eks.module.kms.aws_kms_key.this
+  module.eks.aws_iam_policy.cluster_encryption --> module.eks.module.kms.aws_kms_replica_external_key.this
+  module.eks.aws_iam_policy.cluster_encryption --> module.eks.module.kms.aws_kms_replica_key.this
+  module.eks.aws_iam_policy.cni_ipv6_policy --> module.eks.data.aws_iam_policy_document.cni_ipv6_policy
+  module.eks.aws_iam_policy.custom --> data.terraform_remote_state.network
+  module.eks.aws_iam_policy.custom --> module.eks.data.aws_iam_policy_document.custom
+  module.eks.aws_iam_role.eks_auto --> data.terraform_remote_state.network
+  module.eks.aws_iam_role.eks_auto --> module.eks.data.aws_iam_policy_document.node_assume_role_policy
+  module.eks.aws_iam_role.this --> data.terraform_remote_state.network
+  module.eks.aws_iam_role.this --> module.eks.data.aws_iam_policy_document.assume_role_policy
+  module.eks.aws_iam_role_policy_attachment.additional --> module.eks.aws_iam_role.this
+  module.eks.aws_iam_role_policy_attachment.cluster_encryption --> module.eks.aws_iam_policy.cluster_encryption
+  module.eks.aws_iam_role_policy_attachment.custom --> module.eks.aws_iam_policy.custom
+  module.eks.aws_iam_role_policy_attachment.custom --> module.eks.aws_iam_role.this
+  module.eks.aws_iam_role_policy_attachment.eks_auto --> module.eks.data.aws_partition.current
+  module.eks.aws_iam_role_policy_attachment.eks_auto --> module.eks.aws_iam_role.eks_auto
+  module.eks.aws_iam_role_policy_attachment.eks_auto_additional --> module.eks.aws_iam_role.eks_auto
+  module.eks.aws_iam_role_policy_attachment.this --> module.eks.data.aws_partition.current
+  module.eks.aws_iam_role_policy_attachment.this --> module.eks.aws_iam_role.this
+  module.eks.aws_security_group.cluster --> data.terraform_remote_state.network
+  module.eks.aws_security_group.node --> data.terraform_remote_state.network
+  module.eks.aws_security_group_rule.cluster --> module.eks.aws_security_group.cluster
+  module.eks.aws_security_group_rule.cluster --> module.eks.aws_security_group.node
+  module.eks.aws_security_group_rule.node --> module.eks.aws_security_group.cluster
+  module.eks.aws_security_group_rule.node --> module.eks.aws_security_group.node
+  module.eks.time_sleep.this --> module.eks.aws_eks_cluster.this
+  module.eks.module.eks_managed_node_group.data.aws_caller_identity.current --> module.eks.data.aws_caller_identity.current
+  module.eks.module.eks_managed_node_group.data.aws_eks_cluster_versions.this --> module.eks.time_sleep.this
+  module.eks.module.eks_managed_node_group.data.aws_partition.current --> module.eks.data.aws_partition.current
+  module.eks.module.eks_managed_node_group.data.aws_ssm_parameter.ami --> module.eks.module.eks_managed_node_group.data.aws_eks_cluster_versions.this
+  module.eks.module.eks_managed_node_group.data.aws_subnet.this --> data.terraform_remote_state.network
+  module.eks.module.eks_managed_node_group.aws_eks_node_group.this --> module.eks.module.eks_managed_node_group.data.aws_ssm_parameter.ami
+  module.eks.module.eks_managed_node_group.aws_eks_node_group.this --> module.eks.module.eks_managed_node_group.aws_launch_template.this
+  module.eks.module.eks_managed_node_group.aws_iam_role.this --> module.eks.module.eks_managed_node_group.data.aws_iam_policy_document.assume_role_policy
+  module.eks.module.eks_managed_node_group.aws_iam_role_policy.this --> module.eks.module.eks_managed_node_group.data.aws_iam_policy_document.role
+  module.eks.module.eks_managed_node_group.aws_iam_role_policy.this --> module.eks.module.eks_managed_node_group.aws_iam_role.this
+  module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.additional --> module.eks.module.eks_managed_node_group.aws_iam_role.this
+  module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.this --> module.eks.module.eks_managed_node_group.data.aws_caller_identity.current
+  module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.this --> module.eks.module.eks_managed_node_group.data.aws_partition.current
+  module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.this --> module.eks.module.eks_managed_node_group.aws_iam_role.this
+  module.eks.module.eks_managed_node_group.aws_launch_template.this --> module.eks.module.eks_managed_node_group.data.aws_ec2_instance_type.this
+  module.eks.module.eks_managed_node_group.aws_launch_template.this --> module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.additional
+  module.eks.module.eks_managed_node_group.aws_launch_template.this --> module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.this
+  module.eks.module.eks_managed_node_group.aws_launch_template.this --> module.eks.module.eks_managed_node_group.aws_placement_group.this
+  module.eks.module.eks_managed_node_group.aws_launch_template.this --> module.eks.module.eks_managed_node_group.aws_security_group.this
+  module.eks.module.eks_managed_node_group.aws_launch_template.this --> module.eks.module.eks_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group
+  module.eks.module.eks_managed_node_group.aws_launch_template.this --> module.eks.module.eks_managed_node_group.module.user_data.data.cloudinit_config.al2_eks_managed_node_group
+  module.eks.module.eks_managed_node_group.aws_placement_group.this --> module.eks.time_sleep.this
+  module.eks.module.eks_managed_node_group.aws_security_group.this --> module.eks.time_sleep.this
+  module.eks.module.eks_managed_node_group.aws_security_group.this --> module.eks.module.eks_managed_node_group.data.aws_subnet.this
+  module.eks.module.eks_managed_node_group.aws_vpc_security_group_egress_rule.this --> module.eks.module.eks_managed_node_group.aws_security_group.this
+  module.eks.module.eks_managed_node_group.aws_vpc_security_group_ingress_rule.this --> module.eks.module.eks_managed_node_group.aws_security_group.this
+  module.eks.module.eks_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group --> module.eks.time_sleep.this
+  module.eks.module.eks_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr --> module.eks.time_sleep.this
+  module.eks.module.fargate_profile.data.aws_caller_identity.current --> module.eks.data.aws_caller_identity.current
+  module.eks.module.fargate_profile.data.aws_iam_policy_document.assume_role_policy --> module.eks.time_sleep.this
+  module.eks.module.fargate_profile.data.aws_iam_policy_document.assume_role_policy --> module.eks.module.fargate_profile.data.aws_caller_identity.current
+  module.eks.module.fargate_profile.data.aws_iam_policy_document.assume_role_policy --> module.eks.module.fargate_profile.data.aws_partition.current
+  module.eks.module.fargate_profile.data.aws_iam_policy_document.assume_role_policy --> module.eks.module.fargate_profile.data.aws_region.current
+  module.eks.module.fargate_profile.data.aws_partition.current --> module.eks.data.aws_partition.current
+  module.eks.module.fargate_profile.aws_eks_fargate_profile.this --> module.eks.module.fargate_profile.aws_iam_role.this
+  module.eks.module.fargate_profile.aws_iam_role.this --> module.eks.module.fargate_profile.data.aws_iam_policy_document.assume_role_policy
+  module.eks.module.fargate_profile.aws_iam_role_policy.this --> module.eks.module.fargate_profile.data.aws_iam_policy_document.role
+  module.eks.module.fargate_profile.aws_iam_role_policy.this --> module.eks.module.fargate_profile.aws_iam_role.this
+  module.eks.module.fargate_profile.aws_iam_role_policy_attachment.additional --> module.eks.module.fargate_profile.aws_iam_role.this
+  module.eks.module.fargate_profile.aws_iam_role_policy_attachment.this --> module.eks.module.fargate_profile.aws_iam_role.this
+  module.eks.module.kms.data.aws_iam_policy_document.this --> module.eks.data.aws_iam_session_context.current
+  module.eks.module.kms.data.aws_iam_policy_document.this --> module.eks.aws_iam_role.this
+  module.eks.module.kms.data.aws_iam_policy_document.this --> module.eks.module.kms.data.aws_caller_identity.current
+  module.eks.module.kms.data.aws_iam_policy_document.this --> module.eks.module.kms.data.aws_partition.current
+  module.eks.module.kms.aws_kms_alias.this --> module.eks.module.kms.aws_kms_external_key.this
+  module.eks.module.kms.aws_kms_alias.this --> module.eks.module.kms.aws_kms_key.this
+  module.eks.module.kms.aws_kms_alias.this --> module.eks.module.kms.aws_kms_replica_external_key.this
+  module.eks.module.kms.aws_kms_alias.this --> module.eks.module.kms.aws_kms_replica_key.this
+  module.eks.module.kms.aws_kms_external_key.this --> module.eks.module.kms.data.aws_iam_policy_document.this
+  module.eks.module.kms.aws_kms_grant.this --> module.eks.module.kms.aws_kms_external_key.this
+  module.eks.module.kms.aws_kms_grant.this --> module.eks.module.kms.aws_kms_key.this
+  module.eks.module.kms.aws_kms_grant.this --> module.eks.module.kms.aws_kms_replica_external_key.this
+  module.eks.module.kms.aws_kms_grant.this --> module.eks.module.kms.aws_kms_replica_key.this
+  module.eks.module.kms.aws_kms_key.this --> module.eks.module.kms.data.aws_iam_policy_document.this
+  module.eks.module.kms.aws_kms_replica_external_key.this --> module.eks.module.kms.data.aws_iam_policy_document.this
+  module.eks.module.kms.aws_kms_replica_key.this --> module.eks.module.kms.data.aws_iam_policy_document.this
+  module.eks.module.self_managed_node_group.data.aws_caller_identity.current --> module.eks.data.aws_caller_identity.current
+  module.eks.module.self_managed_node_group.data.aws_partition.current --> module.eks.data.aws_partition.current
+  module.eks.module.self_managed_node_group.data.aws_ssm_parameter.ami --> module.eks.time_sleep.this
+  module.eks.module.self_managed_node_group.data.aws_subnet.this --> data.terraform_remote_state.network
+  module.eks.module.self_managed_node_group.aws_autoscaling_group.this --> module.eks.module.self_managed_node_group.aws_launch_template.this
+  module.eks.module.self_managed_node_group.aws_eks_access_entry.this --> module.eks.time_sleep.this
+  module.eks.module.self_managed_node_group.aws_eks_access_entry.this --> module.eks.module.self_managed_node_group.aws_iam_role.this
+  module.eks.module.self_managed_node_group.aws_iam_instance_profile.this --> module.eks.module.self_managed_node_group.aws_iam_role.this
+  module.eks.module.self_managed_node_group.aws_iam_role.this --> module.eks.module.self_managed_node_group.data.aws_iam_policy_document.assume_role_policy
+  module.eks.module.self_managed_node_group.aws_iam_role_policy.this --> module.eks.module.self_managed_node_group.data.aws_iam_policy_document.role
+  module.eks.module.self_managed_node_group.aws_iam_role_policy.this --> module.eks.module.self_managed_node_group.aws_iam_role.this
+  module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.additional --> module.eks.module.self_managed_node_group.aws_iam_role.this
+  module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.this --> module.eks.module.self_managed_node_group.data.aws_caller_identity.current
+  module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.this --> module.eks.module.self_managed_node_group.data.aws_partition.current
+  module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.this --> module.eks.module.self_managed_node_group.aws_iam_role.this
+  module.eks.module.self_managed_node_group.aws_launch_template.this --> module.eks.module.self_managed_node_group.data.aws_ec2_instance_type.this
+  module.eks.module.self_managed_node_group.aws_launch_template.this --> module.eks.module.self_managed_node_group.data.aws_ssm_parameter.ami
+  module.eks.module.self_managed_node_group.aws_launch_template.this --> module.eks.module.self_managed_node_group.aws_iam_instance_profile.this
+  module.eks.module.self_managed_node_group.aws_launch_template.this --> module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.additional
+  module.eks.module.self_managed_node_group.aws_launch_template.this --> module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.this
+  module.eks.module.self_managed_node_group.aws_launch_template.this --> module.eks.module.self_managed_node_group.aws_placement_group.this
+  module.eks.module.self_managed_node_group.aws_launch_template.this --> module.eks.module.self_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group
+  module.eks.module.self_managed_node_group.aws_launch_template.this --> module.eks.module.self_managed_node_group.module.user_data.data.cloudinit_config.al2_eks_managed_node_group
+  module.eks.module.self_managed_node_group.aws_placement_group.this --> module.eks.time_sleep.this
+  module.eks.module.self_managed_node_group.aws_security_group.this --> module.eks.time_sleep.this
+  module.eks.module.self_managed_node_group.aws_security_group.this --> module.eks.module.self_managed_node_group.data.aws_subnet.this
+  module.eks.module.self_managed_node_group.aws_vpc_security_group_egress_rule.this --> module.eks.module.self_managed_node_group.aws_security_group.this
+  module.eks.module.self_managed_node_group.aws_vpc_security_group_ingress_rule.this --> module.eks.module.self_managed_node_group.aws_security_group.this
+  module.eks.module.self_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group --> module.eks.time_sleep.this
+  module.eks.module.self_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr --> module.eks.time_sleep.this
