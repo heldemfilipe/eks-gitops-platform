@@ -77,3 +77,54 @@ run "menos_de_dois_nos_e_rejeitado" {
 
   expect_failures = [var.node_desired_size]
 }
+
+run "pod_identity_usa_o_principal_certo" {
+  command = plan
+
+  assert {
+    condition = alltrue([
+      for r in [aws_iam_role.lbc, aws_iam_role.eso] :
+      jsondecode(r.assume_role_policy).Statement[0].Principal.Service == "pods.eks.amazonaws.com"
+      && contains(jsondecode(r.assume_role_policy).Statement[0].Action, "sts:TagSession")
+    ])
+    error_message = "As roles de Pod Identity devem confiar em pods.eks.amazonaws.com com sts:AssumeRole e sts:TagSession."
+  }
+}
+
+run "eso_so_le_segredos_do_prefixo" {
+  command = plan
+
+  assert {
+    condition     = jsondecode(aws_iam_role_policy.eso.policy).Statement[0].Resource == "arn:aws:secretsmanager:us-east-1:123456789012:secret:eks-lab/*"
+    error_message = "A policy do ESO deve se limitar aos segredos do prefixo eks-lab/."
+  }
+
+  assert {
+    condition     = !contains(jsondecode(aws_iam_role_policy.eso.policy).Statement[0].Action, "*") && !contains(jsondecode(aws_iam_role_policy.eso.policy).Statement[0].Action, "secretsmanager:*")
+    error_message = "A policy do ESO não pode ter ação com curinga."
+  }
+}
+
+run "associacoes_apontam_para_a_conta_de_servico_certa" {
+  command = plan
+
+  assert {
+    condition     = aws_eks_pod_identity_association.lbc.namespace == "kube-system" && aws_eks_pod_identity_association.lbc.service_account == "aws-load-balancer-controller"
+    error_message = "O LBC deve ser associado a kube-system/aws-load-balancer-controller."
+  }
+
+  assert {
+    condition     = aws_eks_pod_identity_association.eso.namespace == "external-secrets" && aws_eks_pod_identity_association.eso.service_account == "external-secrets"
+    error_message = "O ESO deve ser associado a external-secrets/external-secrets."
+  }
+}
+
+run "prefixo_de_segredos_com_curinga_e_recusado" {
+  command = plan
+
+  variables {
+    secrets_prefix = "*"
+  }
+
+  expect_failures = [var.secrets_prefix]
+}

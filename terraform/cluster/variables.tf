@@ -72,3 +72,14 @@ variable "rede" {
     cluster_name       = "eks-lab"
   }
 }
+
+variable "secrets_prefix" {
+  description = "Prefixo dos segredos do Secrets Manager que o External Secrets pode ler. Termina em barra."
+  type        = string
+  default     = "eks-lab/"
+
+  validation {
+    condition     = can(regex("^[a-z0-9][a-z0-9-]*/$", var.secrets_prefix))
+    error_message = "Use um prefixo como eks-lab/ (sem curinga e terminado em barra)."
+  }
+}

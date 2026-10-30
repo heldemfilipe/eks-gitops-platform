@@ -95,3 +95,43 @@ test_ssh_aberto_e_negado if {
 	})
 	"aws_vpc_security_group_ingress_rule.this expõe porta administrativa para 0.0.0.0/0" in deny with input as t_plano([r])
 }
+
+# --- IAM ---
+
+politica(tipo, doc) := t_raiz(tipo, {"tags": tags_ok, "tags_all": tags_ok, "policy": json.marshal(doc)})
+
+eso_ok := {"Version": "2012-10-17", "Statement": [{
+	"Effect": "Allow",
+	"Action": ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"],
+	"Resource": "arn:aws:secretsmanager:us-east-1:123456789012:secret:eks-lab/*",
+}]}
+
+test_eso_restrito_passa if {
+	count(deny) == 0 with input as t_plano([politica("aws_iam_role_policy", eso_ok)])
+}
+
+test_segredos_com_resource_curinga_e_negado if {
+	doc := {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": "secretsmanager:GetSecretValue", "Resource": "*"}]}
+	"aws_iam_role_policy.this libera secretsmanager:GetSecretValue em todos os segredos (Resource \"*\")" in deny with input as t_plano([politica("aws_iam_role_policy", doc)])
+}
+
+test_action_curinga_e_negada if {
+	doc := {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": "*", "Resource": "arn:aws:s3:::x"}]}
+	"aws_iam_role_policy.this permite Action \"*\"" in deny with input as t_plano([politica("aws_iam_role_policy", doc)])
+}
+
+test_secretsmanager_curinga_e_negado if {
+	doc := {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": ["secretsmanager:*"], "Resource": "arn:aws:secretsmanager:us-east-1:123456789012:secret:eks-lab/*"}]}
+	"aws_iam_role_policy.this usa secretsmanager:* (liste as ações)" in deny with input as t_plano([politica("aws_iam_role_policy", doc)])
+}
+
+test_policy_oficial_do_lbc_com_resource_curinga_em_ec2_passa if {
+	doc := {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": ["ec2:DescribeVpcs"], "Resource": "*"}]}
+	count(deny) == 0 with input as t_plano([politica("aws_iam_policy", doc)])
+}
+
+test_role_de_pod_que_confia_em_ecs_e_negada if {
+	trust := {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Principal": {"Service": "ecs-tasks.amazonaws.com"}, "Action": "sts:AssumeRole"}]}
+	r := t_raiz("aws_iam_role", {"tags": tags_ok, "tags_all": tags_ok, "assume_role_policy": json.marshal(trust)})
+	"aws_iam_role.this é uma role de pod mas confia em ecs-tasks.amazonaws.com" in deny with input as t_plano([r])
+}
