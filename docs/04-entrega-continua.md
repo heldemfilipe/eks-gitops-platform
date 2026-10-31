@@ -25,7 +25,7 @@ Duas pessoas, dois momentos: o robô só **propõe** (abre o PR); quem decide é
 | PR no config com o check `manifests` | executado | PR #1 aberto em 5 s; check verde em 10 s |
 | Merge e sync no cluster | executado | Medido abaixo |
 | Proteção da `main` do config (PR obrigatório e check `manifests`) | executado | `gh api .../branches/main/protection` |
-| Job `atualiza-config` no GitHub Actions | **não executado** | Escrito no `ci.yml` do orders-api; depende do secret `CONFIG_REPO_TOKEN` e do merge da branch `etapa-9-gitops-config` |
+| Job `atualiza-config` no GitHub Actions | **não executado, por decisão** | Escrito no `ci.yml` do orders-api (branch `etapa-9-gitops-config`); sem token e sem execução no GitHub |
 
 ## Tempos medidos (2026-10-30, sem forçar refresh)
 
@@ -60,9 +60,14 @@ rollout, a API respondia `200` pelo ingress.
 | `sed` do script quebrava com `/` e `.` no nome da imagem | Escape dentro de aspas duplas | Troquei por `awk` comparando campos, sem regex |
 | `prometheus` dava `404` no teste da API | Testes do Spring Boot desligam a exportação de métricas por padrão | Propriedades religando a exportação, só nesse teste |
 
-## O que falta para fechar a etapa
+## O que não será executado (decisão do projeto)
 
-1. Cadastrar o secret `CONFIG_REPO_TOKEN` (token fine-grained só para o config) no repositório `orders-api`.
-2. Fazer o push da branch `etapa-9-gitops-config`, abrir o PR e mesclar.
-3. Com o merge, o CI publica a imagem e o job abre o PR de verdade; só então o fluxo "commit na API até o cluster"
-   fica provado ponta a ponta pelo GitHub Actions.
+O projeto fica **só no computador**: nada na AWS, nenhum agendamento no GitHub e nenhum workflow que precise ser
+disparado ou configurado com segredo. Por isso:
+
+- O job `atualiza-config` do GitHub Actions (e o secret `CONFIG_REPO_TOKEN`) ficam como **não executado**: o código
+  existe na branch `etapa-9-gitops-config` do `orders-api`, mas nenhum token foi criado e o job nunca rodou.
+- O caminho "commit na API até o cluster" foi provado sem o CI: o **mesmo script** abriu o PR, e o merge foi seguido
+  pelo Argo CD (tempos acima). O que o Actions acrescentaria é só automatizar o disparo do script.
+- A imagem com métricas e probes não passa pelo GHCR: para a Etapa 5 ela é construída na máquina
+  (`docker build`) e carregada no kind (`kind load docker-image`).
