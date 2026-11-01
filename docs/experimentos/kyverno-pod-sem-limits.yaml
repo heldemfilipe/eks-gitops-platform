@@ -1,0 +1,11 @@
+# Experimento da Etapa 6: este pod viola as três políticas (sem requests/limits, tag latest, sem runAsNonRoot).
+# Esperado: kubectl apply -f ... é NEGADO pelo Kyverno com uma mensagem por política.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exp-ruim
+  namespace: pedidos
+spec:
+  containers:
+    - name: nginx
+      image: nginx:latest

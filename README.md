@@ -43,7 +43,7 @@ quando algo falha e como se opera: criar em camadas, entregar por Git, observar,
 - [x] Etapa 3: identidade e ingress (Pod Identity só em código; Traefik e External Secrets reais no kind; veja [docs/03-identidade-ingress.md](docs/03-identidade-ingress.md))
 - [x] Etapa 4: entrega contínua (script que abre o PR no config e sync do Argo medido; job do Actions não executado, por decisão; veja [docs/04-entrega-continua.md](docs/04-entrega-continua.md))
 - [x] Etapa 5: observabilidade (kube-prometheus-stack, ServiceMonitor, dashboard e alertas no kind; veja [docs/05-observabilidade.md](docs/05-observabilidade.md))
-- [ ] Etapa 6: guardrails e experimentos de falha
+- [x] Etapa 6: guardrails e experimentos de falha (Kyverno, NetworkPolicy, PDB, HPA e cinco experimentos no kind; veja [docs/06-guardrails-e-falhas.md](docs/06-guardrails-e-falhas.md))
 - [ ] Etapa 7: fechamento e custo estimado
 
 ## Como rodar
