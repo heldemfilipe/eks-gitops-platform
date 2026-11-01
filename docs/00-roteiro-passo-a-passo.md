@@ -74,7 +74,7 @@ O perfil `cloud` exige `MONGODB_URI` e não tem valor padrão: o pod só sobe se
 
 ## 5. Etapa 0: estrutura e ferramentas (~1 h)
 
-**Reaproveite do foundation:** `.gitignore`, `.pre-commit-config.yaml`, `.tflint.hcl`, `.github/dependabot.yml` e o
+**Reaproveite do foundation:** `.gitignore`, `.pre-commit-config.yaml`, `.tflint.hcl` e o
 padrão `docs/NN-*.md` com tabela de experimentos e coluna **Status**.
 
 1. Nos dois repositórios: `LICENSE` (MIT) e `.gitignore` (Terraform; no config, nada de `*.env`).

@@ -6,8 +6,8 @@ Do commit na API até a imagem nova rodando no cluster, sem nenhum `kubectl appl
 
 ```mermaid
 flowchart LR
-  dev([commit na main<br/>do orders-api]) --> ci[CI: build, testes<br/>e imagem sha-COMMIT no GHCR]
-  ci --> job[job atualiza-config<br/>atualizar-config.sh]
+  dev([commit na API<br/>orders-api]) --> img[imagem sha-COMMIT<br/>docker build local]
+  img --> job[atualizar-config.sh<br/>rodado na máquina]
   job -- "branch + PR" --> pr{{PR no eks-gitops-config<br/>check manifests}}
   pr -- "merge (humano)" --> main[(main do config)]
   main -- "poll do Argo CD" --> argo[Argo CD no kind]
@@ -25,7 +25,7 @@ Duas pessoas, dois momentos: o robô só **propõe** (abre o PR); quem decide é
 | PR no config com o check `manifests` | executado | PR #1 aberto em 5 s; check verde em 10 s |
 | Merge e sync no cluster | executado | Medido abaixo |
 | Proteção da `main` do config (PR obrigatório e check `manifests`) | executado | `gh api .../branches/main/protection` |
-| Job `atualiza-config` no GitHub Actions | **não executado, por decisão** | Escrito no `ci.yml` do orders-api (branch `etapa-9-gitops-config`); sem token e sem execução no GitHub |
+| Job no GitHub Actions que roda o script | **removido, por decisão** | Chegou a ser escrito no `ci.yml` do orders-api, mas foi retirado da branch `etapa-9-gitops-config`; nunca rodou |
 
 ## Tempos medidos (2026-10-30, sem forçar refresh)
 
@@ -45,11 +45,10 @@ rollout, a API respondia `200` pelo ingress.
 | Decisão | Motivo |
 |---|---|
 | Um só ambiente (`workloads/pedidos/`), sem overlays | Laboratório de um cluster; overlays `dev`/`prod` seriam pasta sem função |
-| O CI propõe por PR, não faz push direto | A `main` do config é a fonte da verdade do cluster; mudança entra por revisão |
+| O script propõe por PR, não faz push direto | A `main` do config é a fonte da verdade do cluster; mudança entra por revisão |
 | Proteção da `main`: PR + check, 0 aprovações, admin pode contornar | Sozinho, ninguém aprova o próprio PR. O check `manifests` é o freio real |
-| `awk` no lugar de `kustomize edit set image` | O script roda no runner e na máquina local sem instalar o `kustomize`; o arquivo é simples e o script falha se a imagem não existir nele |
-| Token com acesso só ao repositório de config (contents e pull requests) | Mínimo para clonar, enviar a branch e abrir o PR; comprometido, só alcança esse repositório |
-| Sem o token, o job avisa e termina em sucesso | O CI da API não quebra para quem ainda não configurou o secret |
+| `awk` no lugar de `kustomize edit set image` | O script roda na máquina local sem instalar o `kustomize`; o arquivo é simples e o script falha se a imagem não existir nele |
+| O script usa o `gh` já autenticado na máquina | Nenhum token novo, nenhum secret no GitHub |
 | Tag `sha-<commit completo>`, nunca `latest` | Reprodutível, reverte com `git revert`, e a política do Kyverno (Etapa 6) proíbe `latest` |
 
 ## Problemas encontrados
@@ -65,9 +64,12 @@ rollout, a API respondia `200` pelo ingress.
 O projeto fica **só no computador**: nada na AWS, nenhum agendamento no GitHub e nenhum workflow que precise ser
 disparado ou configurado com segredo. Por isso:
 
-- O job `atualiza-config` do GitHub Actions (e o secret `CONFIG_REPO_TOKEN`) ficam como **não executado**: o código
-  existe na branch `etapa-9-gitops-config` do `orders-api`, mas nenhum token foi criado e o job nunca rodou.
+- O job `atualiza-config` do GitHub Actions e o secret `CONFIG_REPO_TOKEN` foram **removidos**: o job saiu do
+  `ci.yml` da branch `etapa-9-gitops-config` do `orders-api`, e nenhum token foi criado. O script
+  `atualizar-config.sh` ficou, para rodar na máquina.
 - O caminho "commit na API até o cluster" foi provado sem o CI: o **mesmo script** abriu o PR, e o merge foi seguido
   pelo Argo CD (tempos acima). O que o Actions acrescentaria é só automatizar o disparo do script.
+- Os `dependabot.yml` semanais do `terraform-aws-foundation` e deste repositório foram removidos: as actions
+  fixadas por SHA são atualizadas à mão.
 - A imagem com métricas e probes não passa pelo GHCR: para a Etapa 5 ela é construída na máquina
   (`docker build`) e carregada no kind (`kind load docker-image`).
