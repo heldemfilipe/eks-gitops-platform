@@ -1,0 +1,25 @@
+# Experimento da Etapa 5: duas falhas de pod no namespace pedidos, aplicadas e removidas à mão (não vão para o GitOps).
+#   exp-crash: o contêiner sobe e sai com erro -> CrashLoopBackOff, o contêiner REINICIA.
+#   exp-pull:  a tag não existe             -> ImagePullBackOff, o contêiner NUNCA roda, não há reinício.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exp-crash
+  namespace: pedidos
+  labels: { experimento: observabilidade }
+spec:
+  containers:
+    - name: crash
+      image: busybox:1.37
+      command: ["sh", "-c", "echo falhando; exit 1"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exp-pull
+  namespace: pedidos
+  labels: { experimento: observabilidade }
+spec:
+  containers:
+    - name: pull
+      image: ghcr.io/heldemfilipe/orders-api:tag-inexistente

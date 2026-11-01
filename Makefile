@@ -59,3 +59,18 @@ scan:
 	trivy config terraform --skip-dirs "**/.helm,**/.terraform" --severity HIGH,CRITICAL --ignorefile .trivyignore --exit-code 1
 
 .PHONY: scan
+
+# Observabilidade (Etapa 5). A senha do Grafana é gerada pelo chart; não existe uma padrão.
+grafana-senha:
+	kubectl -n monitoring get secret kube-prometheus-stack-grafana -o jsonpath="{.data.admin-password}" | base64 -d; echo
+
+grafana-ui:
+	kubectl -n monitoring port-forward svc/kube-prometheus-stack-grafana 3000:80
+
+prometheus-ui:
+	kubectl -n monitoring port-forward svc/kube-prometheus-stack-prometheus 9090:9090
+
+alertmanager-ui:
+	kubectl -n monitoring port-forward svc/kube-prometheus-stack-alertmanager 9093:9093
+
+.PHONY: grafana-senha grafana-ui prometheus-ui alertmanager-ui

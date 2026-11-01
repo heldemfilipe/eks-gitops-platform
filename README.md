@@ -41,8 +41,8 @@ quando algo falha e como se opera: criar em camadas, entregar por Git, observar,
 - [x] Etapa 1: kind e Argo CD (veja [docs/01-kind-argocd.md](docs/01-kind-argocd.md))
 - [x] Etapa 2: Terraform em camadas (rede e cluster validados offline; bootstrap aplicado no kind; veja [docs/02-terraform-camadas.md](docs/02-terraform-camadas.md))
 - [x] Etapa 3: identidade e ingress (Pod Identity só em código; Traefik e External Secrets reais no kind; veja [docs/03-identidade-ingress.md](docs/03-identidade-ingress.md))
-- [ ] Etapa 4: entrega contínua
-- [ ] Etapa 5: observabilidade
+- [x] Etapa 4: entrega contínua (script que abre o PR no config e sync do Argo medido; job do Actions não executado, por decisão; veja [docs/04-entrega-continua.md](docs/04-entrega-continua.md))
+- [x] Etapa 5: observabilidade (kube-prometheus-stack, ServiceMonitor, dashboard e alertas no kind; veja [docs/05-observabilidade.md](docs/05-observabilidade.md))
 - [ ] Etapa 6: guardrails e experimentos de falha
 - [ ] Etapa 7: fechamento e custo estimado
 
