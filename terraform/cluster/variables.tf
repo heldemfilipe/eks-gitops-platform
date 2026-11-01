@@ -7,7 +7,7 @@ variable "region" {
 variable "kubernetes_version" {
   description = "Versão do Kubernetes no EKS. Use a mais nova em suporte padrão: versão antiga entra em suporte estendido (US$ 0,60 por hora no plano de controle)."
   type        = string
-  default     = "1.37" # a confirmar na página de versões do EKS antes de qualquer uso real
+  default     = "1.37" # confirmado em 01/11/2026: a mais nova do EKS, com suporte padrão até 01/12/2027
 
   validation {
     condition     = can(regex("^1[.][0-9]{2}$", var.kubernetes_version))
